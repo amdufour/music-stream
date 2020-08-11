@@ -1,0 +1,19 @@
+#visualization {
+  padding: 0 $gutter/2;
+}
+.viz-container {
+  display: inline-block;
+  width: 200px;
+  padding: 0 $gutter/2;
+}
+
+// Track description
+.info-title {
+  font-weight: 700;
+}
+.info-artist {
+  font-size: 1.3rem;
+}
+.info-genre-year {
+  font-size: 1.1rem;
+}
