@@ -4,17 +4,17 @@
 
 // Colors
 const white = '#EDEBEE';
-const blackish = '#404040';
+const blackish = '#262626';
 const grey = '#9A9CA0';
 const greyDark = '#616366';
 const greyPale = '#C2C3C7';
-const electro = '#B17891';
-const rock = '#008DD4';
-const hip_hop = '#A3DA59';
-const rb = '#F1EB0D';
+const electro = '#09D4C7';
+const rock = '#0072A0';
+const hip_hop = '#BEF201';
+const rb = '#FFFF28';
 const latin = '#FE9700';
-const pop = '#EB7071';
-const dance = '#E22A3A';
+const pop = '#E498C8';
+const dance = '#DF3937';
 const women = '#EB5BA7';
 const men = '#0072A0';
 
@@ -61,13 +61,10 @@ Promise.all(promises).then(data => {
 
 
 /*************************************/
-/* Display viz                       */
+/* Append SVG                        */
 /*************************************/
 
 const initializeDisplay = (topSongs, artistsAppearances) => {
-  console.log(topSongs);
-  console.log(artistsAppearances);
-
   // Append main element to container
   let viz = d3.select('#visualization');
   
@@ -82,10 +79,32 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
           return 'track track-' + d.rank;
         })
         .attr('width', '100%')
-        // ******* TO DO *******
-        //  - Precalculate svg height
-        // *********************
         .attr('height', vizHeight);
+
+
+
+  /***********************************************************************/
+  /* SVG definitions                                                     */
+  /* Based on a tutorial by Nadieh Bremer                                */
+  /* https://www.visualcinnamon.com/2016/06/glow-filter-d3-visualization */
+  /***********************************************************************/
+
+  // Append filter element to each svg
+  let defs = tracks.append('defs');
+  let filters = defs.append('filter')
+    .attr('id', d => 'glow-' + d.rank);
+
+  // Apply blur
+  filters.append('feGaussianBlur')
+    .attr('stdDeviation', '3.5')
+    .attr('result', 'coloredBlur');
+
+  // Place the original (sharp) element on top of the blured one
+  let feMerge = filters.append('feMerge');
+  feMerge.append('feMergeNode')
+    .attr('in', 'coloredBlur');
+  feMerge.append('feMergeNode')
+    .attr('in', 'SourceGraphic');
 
 
 
@@ -126,7 +145,8 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
         default:
           return white;
       }
-    });
+    })
+    .style('filter', d => `url(#glow-${d.rank})`);
 
 
     /*************************************/
