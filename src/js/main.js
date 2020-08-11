@@ -10,11 +10,18 @@ const greyDark = '#616366';
 const greyPale = '#C2C3C7';
 const electro = '#09D4C7';
 const rock = '#0072A0';
-const hip_hop = '#BEF201';
-const rb = '#FFFF28';
-const latin = '#FE9700';
-const pop = '#E498C8';
-const dance = '#DF3937';
+// const hip_hop = '#BEF201';
+// const rb = '#FFFF28';
+// const latin = '#FE9700';
+// const pop = '#E498C8';
+// const colors_ = {'plain': '#', 'gradient_0': '#', 'gradient_50': '#', 'gradient_90': '#', 'gradient_100': '#'};
+// const colors_ = {'plain': '#', 'gradient_0': '#', 'gradient_50': '#', 'gradient_90': '#', 'gradient_100': '#'};
+const colors_hiphop = {'plain': '#BEF201', 'gradient_0': '#D5F57F', 'gradient_50': '#BEF201', 'gradient_90': '#ACE600', 'gradient_100': '#93C400'};
+const colors_rb = {'plain': '#FFF845', 'gradient_0': '#FFF76B', 'gradient_50': '#FFF845', 'gradient_90': '#FFE433', 'gradient_100': '#FFC904'};
+const colors_latin = {'plain': '#FF6301', 'gradient_0': '#FFBD94', 'gradient_50': '#FFA46B', 'gradient_90': '#FF8E45', 'gradient_100': '#FF6301'};
+const colors_pop = {'plain': '#E498C8', 'gradient_0': '#E4AAD0', 'gradient_50': '#E498C8', 'gradient_90': '#E677BA', 'gradient_100': '#E652AE'};
+const colors_dance = {'plain': '#DF3937', 'gradient_0': '#E67371', 'gradient_50': '#E04E4B', 'gradient_90': '#E62C29', 'gradient_100': '#E60501'};
+// const dance = '#DF3937';
 const women = '#EB5BA7';
 const men = '#0072A0';
 
@@ -85,26 +92,123 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
 
   /***********************************************************************/
   /* SVG definitions                                                     */
-  /* Based on a tutorial by Nadieh Bremer                                */
+  /* Based on tutorials by Nadieh Bremer                                 */
   /* https://www.visualcinnamon.com/2016/06/glow-filter-d3-visualization */
+  /* https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3   */
   /***********************************************************************/
 
   // Append filter element to each svg
   let defs = tracks.append('defs');
+
+  // Create blur filter
   let filters = defs.append('filter')
     .attr('id', d => 'glow-' + d.rank);
-
   // Apply blur
   filters.append('feGaussianBlur')
     .attr('stdDeviation', '3.5')
     .attr('result', 'coloredBlur');
-
   // Place the original (sharp) element on top of the blured one
   let feMerge = filters.append('feMerge');
   feMerge.append('feMergeNode')
     .attr('in', 'coloredBlur');
   feMerge.append('feMergeNode')
     .attr('in', 'SourceGraphic');
+
+  // Create radial gradient
+  let radialGradient = defs.append('radialGradient')
+    .attr('id', d => `radial-gradient-${d.genre_currated}`)
+    .attr('cx', '50%')
+    .attr('cy', '50%')
+    .attr('r', '50%');
+  // Add colors to the gradient
+  radialGradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", d => {
+      switch(d.genre_currated) {
+        case 'electro':
+          return electro;
+        case 'rock':
+          return rock;
+        case 'hip_hop':
+          return colors_hiphop.gradient_0;
+        case 'r&b':
+          return colors_rb.gradient_0;
+        case 'latin':
+          return colors_latin.gradient_0;
+        case 'pop':
+          return colors_pop.gradient_0;
+        case 'dance':
+          return colors_dance.gradient_0;
+        default:
+          return white;
+      }
+    });
+  radialGradient.append("stop")
+    .attr("offset", "50%")
+    .attr("stop-color", d => {
+      switch(d.genre_currated) {
+        case 'electro':
+          return electro;
+        case 'rock':
+          return rock;
+        case 'hip_hop':
+          return colors_hiphop.gradient_50;
+        case 'r&b':
+          return colors_rb.gradient_50;
+        case 'latin':
+          return colors_latin.gradient_50;
+        case 'pop':
+          return colors_pop.gradient_50;
+        case 'dance':
+          return colors_dance.gradient_50;
+        default:
+          return white;
+      }
+    });
+  radialGradient.append("stop")
+    .attr("offset", "90%")
+    .attr("stop-color", d => {
+      switch(d.genre_currated) {
+        case 'electro':
+          return electro;
+        case 'rock':
+          return rock;
+        case 'hip_hop':
+          return colors_hiphop.gradient_90;
+        case 'r&b':
+          return colors_rb.gradient_90;
+        case 'latin':
+          return colors_latin.gradient_90;
+        case 'pop':
+          return colors_pop.gradient_90;
+        case 'dance':
+          return colors_dance.gradient_90;
+        default:
+          return white;
+      }
+    });
+  radialGradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", d => {
+      switch(d.genre_currated) {
+        case 'electro':
+          return electro;
+        case 'rock':
+          return rock;
+        case 'hip_hop':
+          return colors_hiphop.gradient_100;
+        case 'r&b':
+          return colors_rb.gradient_100;
+        case 'latin':
+          return colors_latin.gradient_100;
+        case 'pop':
+          return colors_pop.gradient_100;
+        case 'dance':
+          return colors_dance.gradient_100;
+        default:
+          return white;
+      }
+    });
 
 
 
@@ -125,23 +229,23 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('r', d => {
       return streamScale(d.streams_millions);
     })
-    .attr('fill', d => {
+    .style('fill', d => {
       // Apply fill based on track genre
       switch(d.genre_currated) {
         case 'electro':
           return electro;
         case 'rock':
           return rock;
-        case 'hip hop':
-          return hip_hop;
+        case 'hip_hop':
+          return 'url(#radial-gradient-hip_hop)';
         case 'r&b':
-          return rb;
+          return 'url(#radial-gradient-r&b)';
         case 'latin':
-          return latin;
+          return 'url(#radial-gradient-latin)';
         case 'pop':
-          return pop;
+          return 'url(#radial-gradient-pop)';
         case 'dance':
-          return dance;
+          return 'url(#radial-gradient-dance)';
         default:
           return white;
       }
