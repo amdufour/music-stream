@@ -15,6 +15,9 @@ const colors_rb = {'plain': '#FFF845', 'gradient_0': '#FFF76B', 'gradient_50': '
 const colors_latin = {'plain': '#FF6301', 'gradient_0': '#FFBD94', 'gradient_50': '#FFA46B', 'gradient_90': '#FF8E45', 'gradient_100': '#FF6301'};
 const colors_pop = {'plain': '#E498C8', 'gradient_0': '#E4AAD0', 'gradient_50': '#E498C8', 'gradient_90': '#E677BA', 'gradient_100': '#E652AE'};
 const colors_dance = {'plain': '#DF3937', 'gradient_0': '#E67371', 'gradient_50': '#E04E4B', 'gradient_90': '#E62C29', 'gradient_100': '#E60501'};
+const colors_blackGradient = {'gradient_0': '#585858', 'gradient_50': '#2D2D2D', 'gradient_90': '#0D0D0D', 'gradient_100': '#000000'};
+const colors_whiteGradient = {'gradient_0': '#FFFFFF', 'gradient_50': white, 'gradient_90': '#0D0D0D', 'gradient_100': '#000000'};
+const colors_greyGradient = {'gradient_0': '#FFFFFF', 'gradient_50': white, 'gradient_90': grey, 'gradient_100': greyDark};
 
 // Screen size's related variables
 const screenWidth = window.innerWidth;
@@ -202,6 +205,61 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
       }
     });
 
+  // Create radial gradients for appearance circles
+  let radialGradientBlack = defs.append('radialGradient')
+    .attr('id', 'radial-gradient-black')
+    .attr('cx', '50%')
+    .attr('cy', '50%')
+    .attr('r', '50%');
+  radialGradientBlack.append("stop")
+    .attr("offset", "0%")
+    .attr('stop-color', colors_blackGradient.gradient_0);
+  radialGradientBlack.append("stop")
+    .attr("offset", "50%")
+    .attr('stop-color', colors_blackGradient.gradient_50);
+  radialGradientBlack.append("stop")
+    .attr("offset", "90%")
+    .attr('stop-color', colors_blackGradient.gradient_90);
+  radialGradientBlack.append("stop")
+    .attr("offset", "100%")
+    .attr('stop-color', colors_blackGradient.gradient_100);
+
+  let radialGradientWhite = defs.append('radialGradient')
+    .attr('id', 'radial-gradient-white')
+    .attr('cx', '50%')
+    .attr('cy', '50%')
+    .attr('r', '50%');
+  radialGradientWhite.append("stop")
+    .attr("offset", "0%")
+    .attr('stop-color', colors_whiteGradient.gradient_0);
+  radialGradientWhite.append("stop")
+    .attr("offset", "50%")
+    .attr('stop-color', colors_whiteGradient.gradient_50);
+  radialGradientWhite.append("stop")
+    .attr("offset", "90%")
+    .attr('stop-color', colors_whiteGradient.gradient_90);
+  radialGradientWhite.append("stop")
+    .attr("offset", "100%")
+    .attr('stop-color', colors_whiteGradient.gradient_100);
+
+  let radialGradientGrey = defs.append('radialGradient')
+    .attr('id', 'radial-gradient-grey')
+    .attr('cx', '50%')
+    .attr('cy', '50%')
+    .attr('r', '50%');
+  radialGradientGrey.append("stop")
+    .attr("offset", "0%")
+    .attr('stop-color', colors_greyGradient.gradient_0);
+  radialGradientGrey.append("stop")
+    .attr("offset", "50%")
+    .attr('stop-color', colors_greyGradient.gradient_50);
+  radialGradientGrey.append("stop")
+    .attr("offset", "90%")
+    .attr('stop-color', colors_greyGradient.gradient_90);
+  radialGradientGrey.append("stop")
+    .attr("offset", "100%")
+    .attr('stop-color', colors_greyGradient.gradient_100);
+
 
 
   /*************************************/
@@ -212,7 +270,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   // Create linear scale to size circles (representing the number of streams)
   const streamScale = d3.scaleLinear()
     .domain(d3.extent( topSongs, d => d.streams_millions))
-    .range([10, 49]);
+    .range([8, 43]);
 
   // Append inner circles (representing the number of streams)
   tracks.append('circle')
@@ -288,12 +346,6 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   /* color & number of circle borders              */
   /*************************************************/
 
-  // Create texture
-  // const textureLines = textures.lines()
-  //   .thicker();
-
-  // tracks.call(textureLines);
-
   // Append circles
   const appendStructureCircle = (structure, rank, strokeColor, strokeWidth, radius) => {
     d3.select('#structure-' + rank).append('circle')
@@ -314,9 +366,10 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     const loudnessWidth = getSizes('loudness-' + d.rank).width / 2;
     switch (d.sex_structure) {
       case 'women':
-      case 'men':
-        // const structureColor = d.sex_structure === 'women' ? women : men;
         appendStructureCircle(d.sex_structure, d.rank, white, 7, loudnessWidth + 9);
+        break;
+      case 'men':
+        appendStructureCircle(d.sex_structure, d.rank, white, 2, loudnessWidth + 9);
         break;
       case 'collaboration':
         for (let i = 0; i < 2; i++) {
@@ -349,21 +402,21 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   // Display number of appearances
   const appendAppearances = (rank, numArtists, totalAppearances, numAppearances_1, numAppearances_2, numAppearances_3, radius) => {
     const angle = degreesToRadians(360 / totalAppearances);
-    let appearanceColor = blackish;
+    let appearanceGradient = 'url(#radial-gradient-black)';
     const appearancesContainer = d3.select('.track-' + rank).append('g')
       .attr('class', 'appearances-container');
-    for (let i = 0; i < totalAppearances; i++) {
-      if (i === numAppearances_1) {
-        appearanceColor = white;
-      } else if (i === numAppearances_2 && numAppearances_2 !== 0) {
-        appearanceColor = grey;
+    for (let i = 1; i <= totalAppearances; i++) {
+      if (i > numAppearances_1 && i <= (numAppearances_1 + numAppearances_2)) {
+        appearanceGradient = 'url(#radial-gradient-white)';
+      } else if (i > (numAppearances_1 + numAppearances_2)) {
+        appearanceGradient = 'url(#radial-gradient-grey)';
       }
       appearancesContainer.append('circle')
         .attr('class', 'appearance-circle')
-        .attr('cx', 85 + (radius * Math.sin(angle * i)))
-        .attr('cy', circlesYCenter - (radius * Math.cos(angle * i)))
+        .attr('cx', 85 + (radius * Math.sin(angle * (i - 1))))
+        .attr('cy', circlesYCenter - (radius * Math.cos(angle * (i - 1))))
         .attr('r', 3)
-        .attr('fill', appearanceColor)
+        .attr('fill', appearanceGradient)
         .attr('stroke', 'none');
     }
   };
@@ -412,7 +465,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .outerRadius(85)
     .cornerRadius(3);
 
-  //  Duration (sec)
+  // Duration (sec)
   const durationArcs = tracks.append('g')
     .attr('class', 'duration-arcs');
   
