@@ -20,8 +20,8 @@ rank,song,artist,primary_artist_1,primary_artist_2,primary_artist_3,album,stream
 71,See You Again,Wiz Khalifa featuring Charlie Puth,Wiz Khalifa,,,Furious 7: Original Motion Picture Soundtrack,1058,2015-03-10,hip hop,hip_hop,collaboration,80,48,69,-8,6,28,230,37,8,81
 31,I Took a Pill in Ibiza (Seeb Remix),Mike Posner and Seeb,Mike Posner,Seeb,,"At Night, Alone",1284,2015-04-14,dance pop,dance,collaboration,102,71,66,-7,8,71,198,4,11,77
 60,Stitches,Shawn Mendes,Shawn Mendes,,,Handwritten,1102,2015-04-14,canadian pop,pop,men,150,75,75,-7,5,75,207,2,7,76
-38,Stressed Out,Twenty One Pilots,Twenty One Pilots,,,Blurryface,1238,2015-04-28,modern rock,rock,duo,170,64,73,-6,6,65,202,5,14,83
-99,Ride,Twenty One Pilots,Twenty One Pilots,,,Blurryface,997,2015-05-17,modern rock,rock,duo,75,71,65,-5,11,57,215,1,4,81
+38,Stressed Out,Twenty One Pilots,Twenty One Pilots,,,Blurryface,1238,2015-04-28,modern rock,rock,band,170,64,73,-6,6,65,202,5,14,83
+99,Ride,Twenty One Pilots,Twenty One Pilots,,,Blurryface,997,2015-05-17,modern rock,rock,band,75,71,65,-5,11,57,215,1,4,81
 84,The Hills,The Weeknd,The Weeknd,,,Beauty Behind The Madness,1027,2015-05-27,canadian contemporary r&b,r&b,men,113,56,59,-7,14,14,242,7,5,83
 78,Can't Feel My Face,The Weeknd,The Weeknd,,,Beauty Behind the Madness,1043,2015-06-08,canadian contemporary r&b,r&b,men,108,77,71,-6,11,58,214,11,4,79
 55,7 Years,Lukas Graham,Lukas Graham,,,Lukas Graham,1122,2015-06-16,danish pop,pop,band,120,47,77,-6,39,34,237,29,5,79
@@ -38,9 +38,9 @@ rank,song,artist,primary_artist_1,primary_artist_2,primary_artist_3,album,stream
 76,This Is What You Came For,Calvin Harris featuring Rihanna,Calvin Harris,,,Non-album single,1048,2016-04-29,dance pop,dance,collaboration,124,93,63,-3,15,47,222,20,3,79
 57,Can't Stop the Feeling!,Justin Timberlake,Justin Timberlake,,,Trolls: Original Motion Picture Soundtrack,1111,2016-05-06,dance pop,pop,men,113,83,67,-6,19,70,236,1,7,78
 43,Treat You Better,Shawn Mendes,Shawn Mendes,,,Illuminate,1191,2016-06-03,canadian pop,pop,men,83,82,44,-4,11,75,188,11,34,82
-70,Heathens,Twenty One Pilots,Twenty One Pilots,,,Suicide Squad: The Album,1058,2016-06-16,modern rock,rock,duo,90,40,73,-9,11,55,196,8,3,81
+70,Heathens,Twenty One Pilots,Twenty One Pilots,,,Suicide Squad: The Album,1058,2016-06-16,modern rock,rock,band,90,40,73,-9,11,55,196,8,3,81
 56,Cold Water,Major Lazer featuring Justin Bieber and MØ,Major Lazer,,,Non-album single,1119,2016-07-22,dance pop,pop,collaboration,93,80,61,-5,16,50,185,7,4,71
-4,Closer,The Chainsmokers featuring Halsey,The Chainsmokers,,,Collage,1823,2016-07-29,dance pop,dance,duo,95,52,75,-6,11,66,245,41,3,84
+4,Closer,The Chainsmokers featuring Halsey,The Chainsmokers,,,Collage,1823,2016-07-29,dance pop,dance,band,95,52,75,-6,11,66,245,41,3,84
 32,Let Me Love You,DJ Snake featuring Justin Bieber,DJ Snake,,,Encore,1265,2016-08-05,dance pop,dance,collaboration,100,72,65,-5,14,16,206,9,3,80
 61,Goosebumps,Travis Scott,Travis Scott,,,Birds in the Trap Sing McKnight,1100,2016-09-02,rap,hip_hop,men,130,73,84,-3,15,43,244,8,5,90
 13,Say You Won't Let Go,James Arthur,James Arthur,,,Back from the Edge,1466,2016-09-09,pop,pop,men,85,56,36,-7,9,49,211,70,6,85
