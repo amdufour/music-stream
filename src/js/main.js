@@ -8,20 +8,13 @@ const blackish = '#262626';
 const grey = '#9A9CA0';
 const greyDark = '#616366';
 const greyPale = '#C2C3C7';
-const electro = '#09D4C7';
-const rock = '#0072A0';
-// const hip_hop = '#BEF201';
-// const rb = '#FFFF28';
-// const latin = '#FE9700';
-// const pop = '#E498C8';
-// const colors_ = {'plain': '#', 'gradient_0': '#', 'gradient_50': '#', 'gradient_90': '#', 'gradient_100': '#'};
-// const colors_ = {'plain': '#', 'gradient_0': '#', 'gradient_50': '#', 'gradient_90': '#', 'gradient_100': '#'};
+const colors_electro = {'plain': '#08C2B5', 'gradient_0': '#67FFF3', 'gradient_50': '#39E6DA', 'gradient_90': '#08C2B5', 'gradient_100': '#06A196'};
+const colors_rock = {'plain': '#006891', 'gradient_0': '#61AECF', 'gradient_50': '#3A99C2', 'gradient_90': '#1C89B8', 'gradient_100': '#006891'};
 const colors_hiphop = {'plain': '#BEF201', 'gradient_0': '#D5F57F', 'gradient_50': '#BEF201', 'gradient_90': '#ACE600', 'gradient_100': '#93C400'};
 const colors_rb = {'plain': '#FFF845', 'gradient_0': '#FFF76B', 'gradient_50': '#FFF845', 'gradient_90': '#FFE433', 'gradient_100': '#FFC904'};
 const colors_latin = {'plain': '#FF6301', 'gradient_0': '#FFBD94', 'gradient_50': '#FFA46B', 'gradient_90': '#FF8E45', 'gradient_100': '#FF6301'};
 const colors_pop = {'plain': '#E498C8', 'gradient_0': '#E4AAD0', 'gradient_50': '#E498C8', 'gradient_90': '#E677BA', 'gradient_100': '#E652AE'};
 const colors_dance = {'plain': '#DF3937', 'gradient_0': '#E67371', 'gradient_50': '#E04E4B', 'gradient_90': '#E62C29', 'gradient_100': '#E60501'};
-// const dance = '#DF3937';
 const women = '#EB5BA7';
 const men = '#0072A0';
 
@@ -126,9 +119,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr("stop-color", d => {
       switch(d.genre_currated) {
         case 'electro':
-          return electro;
+          return colors_electro.gradient_0;
         case 'rock':
-          return rock;
+          return colors_rock.gradient_0;
         case 'hip_hop':
           return colors_hiphop.gradient_0;
         case 'r&b':
@@ -148,9 +141,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr("stop-color", d => {
       switch(d.genre_currated) {
         case 'electro':
-          return electro;
+          return colors_electro.gradient_50;
         case 'rock':
-          return rock;
+          return colors_rock.gradient_50;
         case 'hip_hop':
           return colors_hiphop.gradient_50;
         case 'r&b':
@@ -170,9 +163,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr("stop-color", d => {
       switch(d.genre_currated) {
         case 'electro':
-          return electro;
+          return colors_electro.gradient_90;
         case 'rock':
-          return rock;
+          return colors_rock.gradient_90;
         case 'hip_hop':
           return colors_hiphop.gradient_90;
         case 'r&b':
@@ -192,9 +185,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr("stop-color", d => {
       switch(d.genre_currated) {
         case 'electro':
-          return electro;
+          return colors_electro.gradient_100;
         case 'rock':
-          return rock;
+          return colors_rock.gradient_100;
         case 'hip_hop':
           return colors_hiphop.gradient_100;
         case 'r&b':
@@ -233,9 +226,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
       // Apply fill based on track genre
       switch(d.genre_currated) {
         case 'electro':
-          return electro;
+          return 'url(#radial-gradient-electro)';
         case 'rock':
-          return rock;
+          return 'url(#radial-gradient-rock)';
         case 'hip_hop':
           return 'url(#radial-gradient-hip_hop)';
         case 'r&b':
