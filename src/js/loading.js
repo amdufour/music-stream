@@ -56,9 +56,8 @@ const loadingAnimation = () => {
         transformOrigin: '50% 50%'
       })
       .to('.circles-container', {
-        duration: 2,
+        duration: 2.5,
         rotation: 360,
-        repeat: 10,
         ease: Power0.easeNone
       });
 
