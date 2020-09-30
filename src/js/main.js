@@ -82,6 +82,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
         .attr('width', '100%')
         .attr('height', vizHeight);
 
+  let circlesContainer = tracks.append('g')
+    .attr('class', 'circles-container');
+
 
 
   /***********************************************************************/
@@ -273,8 +276,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .range([8, 43]);
 
   // Append inner circles (representing the number of streams)
-  tracks.append('circle')
+  circlesContainer.append('circle')
     .attr('id', d => 'stream-' + d.rank)
+    .attr('class', 'stream')
     .attr('cx', '50%')
     .attr('cy', circlesYCenter)
     .attr('r', d => {
@@ -329,7 +333,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     }
   };
 
-  tracks.append('g')
+  circlesContainer.append('g')
     .attr('id', d => {
       return 'loudness-' + d.rank;
     })
@@ -358,7 +362,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
       .attr('r', radius);
   };
 
-  tracks.append('g')
+  circlesContainer.append('g')
   .attr('id', d => {
     return 'structure-' + d.rank;
   })
@@ -403,7 +407,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   const appendAppearances = (rank, numArtists, totalAppearances, numAppearances_1, numAppearances_2, numAppearances_3, radius) => {
     const angle = degreesToRadians(360 / totalAppearances);
     let appearanceGradient = 'url(#radial-gradient-black)';
-    const appearancesContainer = d3.select('.track-' + rank).append('g')
+    const appearancesContainer = d3.select(`.track-${rank} .circles-container`).append('g')
       .attr('class', 'appearances-container');
     for (let i = 1; i <= totalAppearances; i++) {
       if (i > numAppearances_1 && i <= (numAppearances_1 + numAppearances_2)) {
@@ -421,7 +425,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     }
   };
     
-  tracks.append('circle')
+  circlesContainer.append('circle')
     .attr('class', 'appearances-arc')
     .attr('cx', '50%')
     .attr('cy', circlesYCenter)
@@ -465,13 +469,28 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .outerRadius(85)
     .cornerRadius(3);
 
+  const sideArcTransition = d3.transition()
+    .ease(d3.easePolyOut.exponent(3))
+    .duration(400);
+
+  const attrTweenSideArc = (startAngle, endAngle) => {
+    const start = {startAngle: degreesToRadians(startAngle), endAngle: degreesToRadians(startAngle)};
+    const end = {startAngle: degreesToRadians(startAngle), endAngle: degreesToRadians(endAngle)};
+    const interpolate = d3.interpolate(start, end);
+    
+    return (t) => {
+        return sideArcGenerator(interpolate(t));
+    };
+  };
+
   // Duration (sec)
-  const durationArcs = tracks.append('g')
-    .attr('class', 'duration-arcs');
-  
   const durationScale = d3.scaleLinear()
     .domain(d3.extent( topSongs, d => d.dur))
     .range([135, 45]);
+
+  const durationArcs = tracks.append('g')
+    .attr('class', 'duration-arcs');
+
   durationArcs.append('path')
     .attr('class', 'arc-bg arc-duration-bg')
     .attr('fill', blackish)
@@ -484,21 +503,21 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('class', 'arc-sup arc-duration-sup')
     .attr('fill', white)
     .style('transform', `translate(50%, ${circlesYCenter}px)`)
-    .attr('d', d => sideArcGenerator({
-      startAngle: degreesToRadians(135),
-      endAngle: degreesToRadians(durationScale(d.dur))
-    }));
+    .transition(sideArcTransition)
+    .delay(2700)
+    .attrTween('d', d => attrTweenSideArc(135, durationScale(d.dur)));
 
   // Liveness / Acousticness
-  const livenessArcs = tracks.append('g')
-    .attr('class', 'liveness-arcs');
-  
   const livenessScale = d3.scaleLinear()
-    .domain(d3.extent( topSongs, d => d.live))
-    .range([-90, -45]);
+  .domain(d3.extent( topSongs, d => d.live))
+  .range([-90, -45]);
   const acousticnessScale = d3.scaleLinear()
     .domain(d3.extent( topSongs, d => d.acous))
     .range([-90, -135]);
+
+  const livenessArcs = tracks.append('g')
+    .attr('class', 'liveness-arcs');
+
   livenessArcs.append('path')
     .attr('class', 'arc-bg arc-liveness-bg')
     .attr('fill', blackish)
@@ -511,18 +530,16 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('class', 'arc-sup arc-liveness-sup')
     .attr('fill', white)
     .style('transform', `translate(50%, ${circlesYCenter}px)`)
-    .attr('d', d => sideArcGenerator({
-      startAngle: degreesToRadians(-90),
-      endAngle: degreesToRadians(livenessScale(d.live))
-    }));
+    .transition(sideArcTransition)
+    .delay(2500)
+    .attrTween('d', d => attrTweenSideArc(-90, livenessScale(d.live)));
   livenessArcs.append('path')
     .attr('class', 'arc-sup arc-acousticness-sup')
     .attr('fill', white)
     .style('transform', `translate(50%, ${circlesYCenter}px)`)
-    .attr('d', d => sideArcGenerator({
-      startAngle: degreesToRadians(-90),
-      endAngle: degreesToRadians(acousticnessScale(d.acous))
-    }));
+    .transition(sideArcTransition)
+    .delay(2800)
+    .attrTween('d', d => attrTweenSideArc(-90, acousticnessScale(d.acous)));
 
 
 
@@ -540,15 +557,15 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   const topArcGenerator = d3.arc()
     .cornerRadius(3);
   const topArcs = tracks.append('g')
-    .attr('arc', 'top-arcs-container');
+    .attr('class', 'top-arcs-container');
   
-  const appendTopArcs = (id, numberOfArcs, startAngle, endAngle) => {
+  const appendTopArcs = (id, arcClass, numberOfArcs, startAngle, endAngle) => {
     for (let i = 0; i < numberOfArcs; i++) {
       const j = i;
       const angle_start = startAngle;
       const angle_end = endAngle;
       d3.select('#' + id).append('path')
-        .attr('class', 'top-arc top-arc-danceability')
+        .attr('class', `top-arc top-arc-danceability ${arcClass}${i + 1}`)
         .attr('fill', white)
         .style('transform', `translate(50%, ${circlesYCenter}px)`)
         .attr('d', d => topArcGenerator({
@@ -566,6 +583,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('class', d => {
       appendTopArcs(
         'top-arcs-bpm-' + d.rank,
+        'arc-bpm-',
         Math.ceil(tempoScale(d.bpm)),
         degreesToRadians(-29),
         degreesToRadians(-18)
@@ -580,6 +598,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('class', d => {
       appendTopArcs(
         'top-arcs-energy-' + d.rank,
+        'arc-energy-',
         Math.ceil(topArcScale(d.nrgy)),
         degreesToRadians(-17),
         degreesToRadians(-6)
@@ -594,6 +613,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('class', d => {
       appendTopArcs(
         'top-arcs-danceability-' + d.rank,
+        'arc-danceability-',
         Math.ceil(topArcScale(d.dnce)),
         degreesToRadians(-5),
         degreesToRadians(5)
@@ -608,6 +628,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('class', d => {
       appendTopArcs(
         'top-arcs-valence-' + d.rank,
+        'arc-valence-',
         Math.ceil(topArcScale(d.val)),
         degreesToRadians(6),
         degreesToRadians(17)
@@ -621,6 +642,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('class', d => {
       appendTopArcs(
         'top-arcs-speechness-' + d.rank,
+        'arc-speechness-',
         Math.ceil(topArcScale(d.spch)),
         degreesToRadians(18),
         degreesToRadians(29)
@@ -678,6 +700,9 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
       return `${d.genre}, ${year}`;
     })
     .call(wrap, 170);
+
+  // Call loading animation
+  loadingAnimation();
 };
 
 
