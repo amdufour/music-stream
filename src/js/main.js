@@ -796,7 +796,6 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   /*************************************************/
   vizContainer
     .on('mouseenter', d => {
-      console.log(d);
       const hoveredTrack = d.rank;
       d3.selectAll('.track')
         .classed('hide', d => {
