@@ -778,8 +778,6 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     return `${numAppearance} ${time}`;
   });
   numAppearance.append('span').attr('class', 'info').html(' in this top 100.');
-    
-  
 
 
 
@@ -797,9 +795,17 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   /*                                               */
   /*************************************************/
   vizContainer
-    .on('mouseover', d => {
+    .on('mouseenter', d => {
       console.log(d);
-      
+      const hoveredTrack = d.rank;
+      d3.selectAll('.track')
+        .classed('hide', d => {
+          return d.rank === hoveredTrack ? false : true;
+        });
+    })
+    .on('mouseleave', d => {
+      d3.selectAll('.track')
+        .classed('hide', false);
     });
 };
 

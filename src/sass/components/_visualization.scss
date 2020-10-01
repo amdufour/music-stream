@@ -9,6 +9,16 @@
   width: 200px;
   padding: 0 $gutter/2;
 }
+.track {
+  opacity: 1;
+  transition-property: opacity;
+  @include easeSineIn;
+  &.hide {
+    opacity: 0.2;
+    transition-property: opacity;
+    @include easeSineOut;
+  }
+}
 
 // Top arcs
 .top-arc {
