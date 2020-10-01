@@ -1,0 +1,46 @@
+footer {
+  margin-top: 200px;
+  padding: 100px 0 20px;
+  background: $white;
+  color: $bg;
+  .footer-content {
+    h2 {
+      margin-bottom: 52px;
+    }
+    p {
+      margin: 20px 0;
+    }
+  }
+  .btn {
+    margin-top: 40px;
+    width: 120px;
+  }
+
+  .footer-bottom {
+    margin-top: 150px;
+    .icons,
+    .copyright {
+      font-size: 1.3rem;
+      line-height: 1.2;
+      @media (max-width: $md) {
+        font-size: 1.1rem;
+      }
+    }
+    .icons {
+      a {
+        color: $bg;
+        border-bottom: 1px solid $white;
+      }
+      @media (max-width: $md) {
+        margin-bottom: 8px;
+        margin-left: 2px;
+      }
+    }
+    .copyright {
+      text-align: right;
+      @media (max-width: $md) {
+        text-align: left;
+      }
+    }
+  }
+}

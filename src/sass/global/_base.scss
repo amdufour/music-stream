@@ -7,6 +7,7 @@
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 *, ::after, ::before {
   box-sizing: inherit;

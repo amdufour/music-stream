@@ -1,0 +1,28 @@
+.btn {
+  display: inline-block;
+  margin-right: 20px;
+  padding: 1rem 1.5rem;
+  color: $white;
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid $white;
+  border-radius: $radius;
+  transition-property: all;
+  @include easeSineIn;
+  &:hover, &:focus {
+    color: $bg;
+    background: $white;
+    transition-property: all;
+    @include easeSineOut;
+  }
+
+  &.btn-dark {
+    color: $bg;
+    border-color: $bg;
+    &:hover, &:focus {
+      color: $white;
+      background: $bg;
+    }
+  }
+}

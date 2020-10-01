@@ -74,7 +74,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .data(topSongs)
     .enter()
     .append('div')
-      .attr('class', 'viz-container')
+      .attr('class', 'viz-container');
   let vizContainer = tracks.append('svg')
     .attr('class', d => {
       return 'track track-' + d.rank;
