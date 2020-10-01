@@ -5,13 +5,14 @@
   padding: 0 $gutter/2;
 }
 .viz-container {
+  position: relative;
   width: 200px;
   padding: 0 $gutter/2;
 }
 
 // Top arcs
 .top-arc {
-  opacity: 0;
+  // opacity: 0;
   transition: opacity 0.1 cubic-bezier(0.32, 0, 0.67, 0);
   &.visible {
     opacity: 1;
@@ -19,29 +20,10 @@
   }
 }
 
-// Track description
-.track-info {
-  opacity: 0;
-  transition: opacity 200ms cubic-bezier(0.32, 0, 0.67, 0);
-  &.visible {
-    opacity: 1;
-    transition: opacity 200ms cubic-bezier(0.33, 1, 0.68, 1);
-  }
-}
-.info-title {
-  font-weight: 700;
-}
-.info-artist {
-  font-size: 1.3rem;
-}
-.info-genre-year {
-  font-size: 1.1rem;
-}
-
 // Hide main elements, which will be revealed on page load
 // (see js for animations)
-.loudness-container,
-.structure-container,
-.appearance-circle {
-  opacity: 0;
-}
+// .loudness-container,
+// .structure-container,
+// .appearance-circle {
+//   opacity: 0;
+// }

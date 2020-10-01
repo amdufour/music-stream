@@ -75,14 +75,14 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .enter()
     .append('div')
       .attr('class', 'viz-container')
-      .append('svg')
-        .attr('class', d => {
-          return 'track track-' + d.rank;
-        })
-        .attr('width', '100%')
-        .attr('height', vizHeight);
+  let vizContainer = tracks.append('svg')
+    .attr('class', d => {
+      return 'track track-' + d.rank;
+    })
+    .attr('width', '100%')
+    .attr('height', vizHeight);
 
-  let circlesContainer = tracks.append('g')
+  let circlesContainer = vizContainer.append('g')
     .attr('class', 'circles-container');
 
 
@@ -95,7 +95,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   /***********************************************************************/
 
   // Append filter element to each svg
-  let defs = tracks.append('defs');
+  let defs = vizContainer.append('defs');
 
   // Create blur filter
   let filters = defs.append('filter')
@@ -488,7 +488,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .domain(d3.extent( topSongs, d => d.dur))
     .range([135, 45]);
 
-  const durationArcs = tracks.append('g')
+  const durationArcs = vizContainer.append('g')
     .attr('class', 'duration-arcs');
 
   durationArcs.append('path')
@@ -504,7 +504,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('fill', white)
     .style('transform', `translate(50%, ${circlesYCenter}px)`)
     .transition(sideArcTransition)
-    .delay(2700)
+    // .delay(2700)
     .attrTween('d', d => attrTweenSideArc(135, durationScale(d.dur)));
 
   // Liveness / Acousticness
@@ -515,7 +515,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .domain(d3.extent( topSongs, d => d.acous))
     .range([-90, -135]);
 
-  const livenessArcs = tracks.append('g')
+  const livenessArcs = vizContainer.append('g')
     .attr('class', 'liveness-arcs');
 
   livenessArcs.append('path')
@@ -531,14 +531,14 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .attr('fill', white)
     .style('transform', `translate(50%, ${circlesYCenter}px)`)
     .transition(sideArcTransition)
-    .delay(2500)
+    // .delay(2500)
     .attrTween('d', d => attrTweenSideArc(-90, livenessScale(d.live)));
   livenessArcs.append('path')
     .attr('class', 'arc-sup arc-acousticness-sup')
     .attr('fill', white)
     .style('transform', `translate(50%, ${circlesYCenter}px)`)
     .transition(sideArcTransition)
-    .delay(2800)
+    // .delay(2800)
     .attrTween('d', d => attrTweenSideArc(-90, acousticnessScale(d.acous)));
 
 
@@ -556,7 +556,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   
   const topArcGenerator = d3.arc()
     .cornerRadius(3);
-  const topArcs = tracks.append('g')
+  const topArcs = vizContainer.append('g')
     .attr('class', 'top-arcs-container');
   
   const appendTopArcs = (id, arcClass, numberOfArcs, startAngle, endAngle) => {
@@ -656,11 +656,14 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   /* Track info                                    */
   /* song's title, artist, genre and year          */
   /*************************************************/
-  const trackInfo = tracks.append('g')
+  const trackInfo = vizContainer.append('g')
     .attr('class', 'track-info');
+  const infoMain = trackInfo.append('g')
+    .attr('id', d => 'info-main-' + d.rank)
+    .attr('class', 'info-main');
     
   // Append title
-  trackInfo.append('text')
+  infoMain.append('text')
       .attr('id', d => 'info-title-' + d.rank)
       .attr('class', 'info-title')
       .attr('x', 85)
@@ -671,12 +674,12 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
       .call(wrap, 170);
 
   // Append artist(s)
-  trackInfo.append('text')
+  infoMain.append('text')
     .attr('id', d => 'info-artist-' + d.rank)
     .attr('class', 'info-artist')
     .attr('x', 85)
     .attr('y', d => {
-      var infoTitleHeight = Math.round(getSizes('info-title-' + d.rank).height);
+      const infoTitleHeight = Math.round(getSizes('info-title-' + d.rank).height);
       return infoYPosition + infoTitleHeight;
     })
     .attr('dy', 0.3)
@@ -685,12 +688,13 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .call(wrap, 170);
 
   // Append genre + year
-  trackInfo.append('text')
+  infoMain.append('text')
+    .attr('id', d => 'info-genre-year-' + d.rank)
     .attr('class', 'info-genre-year')
     .attr('x', 85)
     .attr('y', d => {
-      var infoTitleHeight = Math.round(getSizes('info-title-' + d.rank).height);
-      var infoArtistHeight = Math.round(getSizes('info-artist-' + d.rank) .height);
+      const infoTitleHeight = Math.round(getSizes('info-title-' + d.rank).height);
+      const infoArtistHeight = Math.round(getSizes('info-artist-' + d.rank).height);
       return infoYPosition + infoTitleHeight + infoArtistHeight + 10;
     })
     .attr('dy', 0.3)
@@ -701,8 +705,102 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     })
     .call(wrap, 170);
 
-  // Call loading animation
-  loadingAnimation();
+  // Append rollover info section
+  const infoSup = tracks.append('div')
+    .attr('id', d => 'info-sup-' + d.rank)
+    .attr('class', 'info-supplement')
+    .style('top', d => {
+      const infoHeight = Math.round(getSizes('info-main-' + d.rank).height);
+      return `${infoHeight + 225}px`;
+    });
+
+  const streamNumber = infoSup.append('div')
+    .attr('class', 'stream-number');
+  streamNumber.append('span')
+    .attr('class', 'number')
+    .html(d => `${d.streams_millions}M`);
+  streamNumber.append('span')
+    .html(' streams');
+
+  const infoRow = infoSup.append('div').attr('class', 'row');
+  const colLeft = infoRow.append('div').attr('class', 'col-6').append('ul');
+  const colRight = infoRow.append('div').attr('class', 'col-6').append('ul');
+
+  const duration = colLeft.append('li');
+  duration.append('span').attr('class', 'info-title').html('Duration: ');
+  duration.append('span').attr('class', 'info').html(d => {
+    const min = Math.floor(d.dur / 60);
+    const sec = d.dur % 60;
+    return `${min}m${sec}s`;
+  });
+
+  const liveness = colLeft.append('li');
+  liveness.append('span').attr('class', 'info-title').html('Liveness: ');
+  liveness.append('span').attr('class', 'info').html(d => d.live);
+
+  const acousticness = colLeft.append('li');
+  acousticness.append('span').attr('class', 'info-title').html('Acousticness: ');
+  acousticness.append('span').attr('class', 'info').html(d => d.acous);
+
+  const loudness = colLeft.append('li');
+  loudness.append('span').attr('class', 'info-title').html('Loudness: ');
+  loudness.append('span').attr('class', 'info').html(d => d.dB);
+
+  const tempoInfo = colRight.append('li');
+  tempoInfo.append('span').attr('class', 'info-title').html('Tempo: ');
+  tempoInfo.append('span').attr('class', 'info').html(d => d.bpm);
+
+  const energy = colRight.append('li');
+  energy.append('span').attr('class', 'info-title').html('Energy: ');
+  energy.append('span').attr('class', 'info').html(d => d.nrgy);
+
+  const danceability = colRight.append('li');
+  danceability.append('span').attr('class', 'info-title').html('Danceability: ');
+  danceability.append('span').attr('class', 'info').html(d => d.dnce);
+
+  const valence = colRight.append('li');
+  valence.append('span').attr('class', 'info-title').html('Valence: ');
+  valence.append('span').attr('class', 'info').html(d => d.val);
+
+  const speechness = colRight.append('li');
+  speechness.append('span').attr('class', 'info-title').html('Speechness: ');
+  speechness.append('span').attr('class', 'info').html(d => d.spch);
+
+  const album = infoSup.append('div').attr('class', 'album');
+  album.append('span').attr('class', 'info-title').html('album: ');
+  album.append('span').attr('class', 'info').html(d => d.album);
+
+  const numAppearance = infoSup.append('div').attr('class', 'num-appearance');
+  numAppearance.append('span').attr('class', 'info').html(d => `${d.primary_artist_1} appears `);
+  numAppearance.append('span').attr('class', 'info-title').html(d => {
+    const numAppearance = getNumberOfAppearances(d.primary_artist_1);
+    const time = numAppearance > 1 ? 'times' : 'time';
+    return `${numAppearance} ${time}`;
+  });
+  numAppearance.append('span').attr('class', 'info').html(' in this top 100.');
+    
+  
+
+
+
+  /*************************************************/
+  /* Call loading animation                        */
+  /*                                               */
+  /*************************************************/
+
+  // loadingAnimation();
+
+  
+  
+  /*************************************************/
+  /* Reveal information on rollover                */
+  /*                                               */
+  /*************************************************/
+  vizContainer
+    .on('mouseover', d => {
+      console.log(d);
+      
+    });
 };
 
 
