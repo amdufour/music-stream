@@ -777,15 +777,6 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   });
   numAppearance.append('span').attr('class', 'info').html(' in this top 100.');
 
-
-
-  /*************************************************/
-  /* Call loading animation                        */
-  /*                                               */
-  /*************************************************/
-
-  // loadingAnimation();
-
   
   
   /*************************************************/
