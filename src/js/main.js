@@ -76,9 +76,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .append('div')
       .attr('class', 'viz-container');
   let vizContainer = tracks.append('svg')
-    .attr('class', d => {
-      return 'track track-' + d.rank;
-    })
+    .attr('class', d => 'track track-' + d.rank )
     .attr('width', '100%')
     .attr('height', vizHeight);
 
@@ -912,6 +910,29 @@ const wrap = (text, width) => {
     }
   });
 };
+
+
+
+/*************************************/
+/* Listen to D3 appending svg        */
+/*************************************/
+let targetNode = document.getElementById('visualization');
+let config = { childList: true };
+
+let callback = function(mutationsList) {
+  let i = 0;
+  for(let mutation of mutationsList) {
+    if (mutation.type == 'childList') {
+      i = i + 1;
+    }
+    if (i === 1) {
+      document.getElementById('visualization-container').classList.remove('loading');
+    }
+  }
+};
+
+let observer = new MutationObserver(callback);
+observer.observe(targetNode, config);
 
 
 /*************************************/
