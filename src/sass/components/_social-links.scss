@@ -16,6 +16,14 @@
         transition-property: fill;
         @include easeSineIn;
       }
+      &:hover, &:focus {
+        .logo-instagram g,
+        .logo-behance g,
+        .logo-linkedin path {
+          fill: $accent;
+          @include easeSineOut;
+        }
+      }
     }
   }
 }

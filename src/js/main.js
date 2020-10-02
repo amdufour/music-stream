@@ -485,7 +485,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
 
   // Duration (sec)
   const durationScale = d3.scaleLinear()
-    .domain(d3.extent( topSongs, d => d.dur))
+    .domain([0, 360])
     .range([135, 45]);
 
   const durationArcs = vizContainer.append('g')
@@ -509,10 +509,10 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
 
   // Liveness / Acousticness
   const livenessScale = d3.scaleLinear()
-  .domain(d3.extent( topSongs, d => d.live))
+  .domain([0, 100])
   .range([-90, -45]);
   const acousticnessScale = d3.scaleLinear()
-    .domain(d3.extent( topSongs, d => d.acous))
+    .domain([0, 100])
     .range([-90, -135]);
 
   const livenessArcs = vizContainer.append('g')
@@ -727,7 +727,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   const colRight = infoRow.append('div').attr('class', 'col-6').append('ul');
 
   const duration = colLeft.append('li');
-  duration.append('span').attr('class', 'info-title').html('Duration: ');
+  duration.append('span').attr('class', 'info-label').html('Duration: ');
   duration.append('span').attr('class', 'info').html(d => {
     const min = Math.floor(d.dur / 60);
     const sec = d.dur % 60;
@@ -735,44 +735,44 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   });
 
   const liveness = colLeft.append('li');
-  liveness.append('span').attr('class', 'info-title').html('Liveness: ');
+  liveness.append('span').attr('class', 'info-label').html('Liveness: ');
   liveness.append('span').attr('class', 'info').html(d => d.live);
 
   const acousticness = colLeft.append('li');
-  acousticness.append('span').attr('class', 'info-title').html('Acousticness: ');
+  acousticness.append('span').attr('class', 'info-label').html('Acousticness: ');
   acousticness.append('span').attr('class', 'info').html(d => d.acous);
 
   const loudness = colLeft.append('li');
-  loudness.append('span').attr('class', 'info-title').html('Loudness: ');
+  loudness.append('span').attr('class', 'info-label').html('Loudness: ');
   loudness.append('span').attr('class', 'info').html(d => d.dB);
 
   const tempoInfo = colRight.append('li');
-  tempoInfo.append('span').attr('class', 'info-title').html('Tempo: ');
+  tempoInfo.append('span').attr('class', 'info-label').html('Tempo: ');
   tempoInfo.append('span').attr('class', 'info').html(d => d.bpm);
 
   const energy = colRight.append('li');
-  energy.append('span').attr('class', 'info-title').html('Energy: ');
+  energy.append('span').attr('class', 'info-label').html('Energy: ');
   energy.append('span').attr('class', 'info').html(d => d.nrgy);
 
   const danceability = colRight.append('li');
-  danceability.append('span').attr('class', 'info-title').html('Danceability: ');
+  danceability.append('span').attr('class', 'info-label').html('Danceability: ');
   danceability.append('span').attr('class', 'info').html(d => d.dnce);
 
   const valence = colRight.append('li');
-  valence.append('span').attr('class', 'info-title').html('Valence: ');
+  valence.append('span').attr('class', 'info-label').html('Valence: ');
   valence.append('span').attr('class', 'info').html(d => d.val);
 
   const speechness = colRight.append('li');
-  speechness.append('span').attr('class', 'info-title').html('Speechness: ');
+  speechness.append('span').attr('class', 'info-label').html('Speechness: ');
   speechness.append('span').attr('class', 'info').html(d => d.spch);
 
   const album = infoSup.append('div').attr('class', 'album');
-  album.append('span').attr('class', 'info-title').html('album: ');
+  album.append('span').attr('class', 'info-label').html('album: ');
   album.append('span').attr('class', 'info').html(d => d.album);
 
   const numAppearance = infoSup.append('div').attr('class', 'num-appearance');
   numAppearance.append('span').attr('class', 'info').html(d => `${d.primary_artist_1} appears `);
-  numAppearance.append('span').attr('class', 'info-title').html(d => {
+  numAppearance.append('span').attr('class', 'info-label').html(d => {
     const numAppearance = getNumberOfAppearances(d.primary_artist_1);
     const time = numAppearance > 1 ? 'times' : 'time';
     return `${numAppearance} ${time}`;
@@ -850,3 +850,12 @@ const wrap = (text, width) => {
     }
   });
 };
+
+
+/*************************************/
+/* Update Copyright years            */
+/*************************************/
+const creationYear = 2020;
+const currentYear = new Date().getFullYear();
+const copyrightYears = currentYear === creationYear ? currentYear : `${creationYear}-${currentYear}`;
+document.querySelector('.copyright-years').innerHTML = copyrightYears;

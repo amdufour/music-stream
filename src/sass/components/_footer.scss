@@ -29,7 +29,11 @@ footer {
     .icons {
       a {
         color: $bg;
-        border-bottom: 1px solid $white;
+        border-bottom-color: $bg;
+        &:hover, &:focus {
+          color: $accent;
+          border-bottom-color: $accent;
+        }
       }
       @media (max-width: $md) {
         margin-bottom: 8px;

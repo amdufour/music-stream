@@ -1,4 +1,8 @@
 // Track description
+.info-title {
+  font-size: 15px;
+  font-weight: 700;
+  }
 .info-title,
 .stream-number .number {
   font-weight: 700;
@@ -15,14 +19,14 @@
   position: absolute;
   z-index: 100;
   top: 280px;
-  left: -30px;
-  right: -30px;
+  left: -40px;
+  right: -40px;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 0;
   padding-bottom: 0;
   max-height: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   background-color: $bg;
   border: 1px solid $white;
   border-radius: $radius;
@@ -36,9 +40,6 @@
     text-align: center;
     border-bottom: 1px solid $text;
   }
-  .info-title {
-    font-weight: 700;
-  }
   ul {
     margin: 0;
     padding-top: 15px;
@@ -47,6 +48,9 @@
     li {
       margin: 5px 0;
     }
+  }
+  .info-label {
+    font-weight: 700;
   }
   .album,
   .num-appearance {
