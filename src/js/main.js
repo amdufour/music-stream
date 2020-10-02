@@ -74,7 +74,7 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .data(topSongs)
     .enter()
     .append('div')
-      .attr('class', 'viz-container');
+      .attr('class', d => 'viz-container viz-container-' + d.rank);
   let vizContainer = tracks.append('svg')
     .attr('class', d => 'track track-' + d.rank )
     .attr('width', '100%')
@@ -783,6 +783,10 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
   /* Reveal information on rollover                */
   /*                                               */
   /*************************************************/
+  document.addEventListener('click', (e) => {
+    d3.selectAll('.viz-container.visible')
+      .classed('visible', false);
+  });
   vizContainer
     .on('mouseenter', d => {
       const hoveredTrack = d.rank;
@@ -794,6 +798,12 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
     .on('mouseleave', d => {
       d3.selectAll('.track')
         .classed('hide', false);
+    })
+    .on('click', d => {
+      if (window.innerWidth <= 768) {
+        const vizContainer = d3.select('.viz-container-' + d.rank);
+        vizContainer.classed('visible', true)
+      }
     });
 
 

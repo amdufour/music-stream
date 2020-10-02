@@ -58,7 +58,8 @@
   }
 }
 .viz-container {
-  &:hover, &:focus {
+  &:hover, &:focus,
+  &.visible {
     .info-supplement {
       padding-top: 20px;
       padding-bottom: 20px;
