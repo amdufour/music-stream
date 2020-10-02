@@ -806,6 +806,68 @@ const initializeDisplay = (topSongs, artistsAppearances) => {
       d3.selectAll('.track')
         .classed('hide', false);
     });
+
+
+    /***************************************/
+    /* Append legend for number of streams */
+    /***************************************/
+    const legendRadius = streamScale(3000);
+    const legendStreams = d3.select('.legend-section-streams .legend-content').append('svg')
+      .attr('id', 'legend-streams');
+    
+    const legendStreamsCircles = legendStreams.append('g')
+      .attr('class', 'legend-streams-circles')
+      .attr('fill', white)
+      .attr('fill-opacity', 0.4)
+      .attr('stroke', white);
+    legendStreamsCircles.append('circle')
+      .attr('r', legendRadius)
+      .attr('cx', legendRadius + 1)
+      .attr('cy', legendRadius + 1);
+    legendStreamsCircles.append('circle')
+      .attr('r', streamScale(2000))
+      .attr('cx', legendRadius + 1)
+      .attr('cy', 2 * legendRadius - streamScale(2000) + 1);
+    legendStreamsCircles.append('circle')
+      .attr('r', streamScale(1000))
+      .attr('cx', legendRadius + 1)
+      .attr('cy', 2 * legendRadius - streamScale(1000) + 1);
+
+    const legendStreamsLines = legendStreams.append('g')
+      .attr('class', 'legend-streams-lines')
+      .attr('stroke', white)
+      .attr('stroke-width', 2)
+      .attr('stroke-dasharray', '6 4');
+    legendStreamsLines.append('line')
+      .attr('x1', legendRadius + 1)
+      .attr('x2', legendRadius + 101)
+      .attr('y1', 1)
+      .attr('y2', 1);
+    legendStreamsLines.append('line')
+      .attr('x1', legendRadius + 1)
+      .attr('x2', legendRadius + 101)
+      .attr('y1', 2 * (legendRadius - streamScale(2000)) + 1)
+      .attr('y2', 2 * (legendRadius - streamScale(2000)) + 1);
+    legendStreamsLines.append('line')
+      .attr('x1', legendRadius + 1)
+      .attr('x2', legendRadius + 101)
+      .attr('y1', 2 * (legendRadius - streamScale(1000)) + 1)
+      .attr('y2', 2 * (legendRadius - streamScale(1000)) + 1);
+
+    const legendStreamsText = legendStreams.append('g')
+      .attr('class', 'legend-streams-text');
+    legendStreamsText.append('text')
+      .attr('x', legendRadius + 104)
+      .attr('y', 5)
+      .text('3000M');
+    legendStreamsText.append('text')
+      .attr('x', legendRadius + 104)
+      .attr('y', 2 * (legendRadius - streamScale(2000)) + 5)
+      .text('2000M');
+    legendStreamsText.append('text')
+      .attr('x', legendRadius + 104)
+      .attr('y', 2 * (legendRadius - streamScale(1000)) + 5)
+      .text('1000M');
 };
 
 
